@@ -18,7 +18,8 @@ library
   -- ghc-options:         -Wall
   -- other-modules:       
   -- other-extensions:    
-  exposed-modules:     RWH
+  exposed-modules:     RWH,
+                       Ch03.BookStore
   build-depends:       base >=4.6 && <4.7,
                        mtl >=2.2.1 && <2.3,
                        containers >=0.5.5 && <0.6
