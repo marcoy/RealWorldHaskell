@@ -19,7 +19,8 @@ library
   -- other-modules:       
   -- other-extensions:    
   exposed-modules:     RWH,
-                       Ch03.BookStore
+                       Ch03.BookStore,
+                       Ch03.Exercises
   build-depends:       base >=4.6 && <4.7,
                        mtl >=2.2.1 && <2.3,
                        containers >=0.5.5 && <0.6
