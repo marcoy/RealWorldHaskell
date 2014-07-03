@@ -38,3 +38,18 @@ recTakeWhile _ []     = []
 recTakeWhile p (x:xs) = if p x
                         then x:recTakeWhile p xs
                         else []
+
+foldrTakeWhile :: (a -> Bool) -> [a] -> [a]
+foldrTakeWhile _ [] = []
+foldrTakeWhile p xs = foldr step [] xs
+                      where step x acc
+                                | p x       = x:acc
+                                | otherwise = []
+
+
+-- foldGroupBy :: (a -> a -> Bool) -> [a] -> [[a]]
+foldGroupBy p xs = foldr step ([],[]) xs
+                   where step x ([],acc)     = ([x],acc)
+                         step x (sub,acc)
+                            | p x (head sub) = (x:sub,acc)
+                            | otherwise      = ([x],[sub] ++ acc)
