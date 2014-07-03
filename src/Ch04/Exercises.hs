@@ -47,9 +47,19 @@ foldrTakeWhile p xs = foldr step [] xs
                                 | otherwise = []
 
 
--- foldGroupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-foldGroupBy p xs = foldr step ([],[]) xs
+-- Use ghci to load the Data.List module and figure out what groupBy does,
+-- then write your own implementation using a fold
+foldGroupBy :: (a -> a -> Bool) -> [a] -> [[a]]
+foldGroupBy p xs = combine $ foldr step ([],[]) xs
                    where step x ([],acc)     = ([x],acc)
                          step x (sub,acc)
                             | p x (head sub) = (x:sub,acc)
-                            | otherwise      = ([x],[sub] ++ acc)
+                            | otherwise      = ([x],sub:acc)
+                         combine (sub,acc) = sub:acc
+
+foldGroupBy' :: (a -> a -> Bool) -> [a] -> [[a]]
+foldGroupBy' p xs = foldr step [] xs
+                    where step x []           = [[x]]
+                          step x acc@(ys:yss)
+                              | p x (head ys) = (x:ys):yss
+                              | otherwise     = [x]:acc
