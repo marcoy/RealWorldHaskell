@@ -24,3 +24,17 @@ asIntEither s = foldl' step (Right 0) s
                       step (Right acc) x
                         | not (isDigit x) = Left $ (show x) ++ " is not a digit"
                         | otherwise       = Right (acc * 10 + digitToInt x)
+
+
+-- Write your own definition of concat using foldr
+foldrConcat :: [[a]] -> [a]
+foldrConcat = foldr (++) []
+
+
+-- Write your own definition of the standard takeWhile function, first
+-- using explicit recursion, then foldr
+recTakeWhile :: (a -> Bool) -> [a] -> [a]
+recTakeWhile _ []     = []
+recTakeWhile p (x:xs) = if p x
+                        then x:recTakeWhile p xs
+                        else []
