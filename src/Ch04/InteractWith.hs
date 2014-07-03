@@ -1,4 +1,4 @@
-module Ch04.InteractWith where
+module Main where
 
 import System.Environment (getArgs)
 
