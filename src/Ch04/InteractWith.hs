@@ -1,6 +1,7 @@
 module Main where
 
 import System.Environment (getArgs)
+import Ch04.SplitLines (fixLines)
 
 interactWith function inputFile outputFile = do
         input <- readFile inputFile
@@ -13,4 +14,4 @@ main = mainWith myFunction
             case args of
                 [input, output] -> interactWith function input output
                 _ -> putStrLn "error: exactly two arguments needed"
-          myFunction = id
+          myFunction = fixLines
