@@ -6,6 +6,10 @@ module Ch08.GlobRegex
 
 import Text.Regex.Posix ((=~))
 
+
+type GlobError = String
+
+
 matchesGlob :: FilePath -> String -> Bool
 name `matchesGlob` pat = name =~ globToRegex pat
 
@@ -30,3 +34,21 @@ charClass :: String -> String
 charClass (']':cs) = ']' : globToRegex' cs
 charClass (c:cs)   = c : charClass cs
 charClass []       = error "unterminated character class"
+
+
+--
+-- Exercise
+--
+globToRegexEither :: String -> Either GlobError String
+globToRegexEither cs = case globToRegexEither' cs of
+                           (Right r) -> Right $ '^' : r ++ "$"
+                           err       -> err
+
+globToRegexEither' :: String -> Either GlobError String
+globToRegexEither' ""             = Right ""
+globToRegexEither' ('*':cs)       = Right $ ".*" ++ globToRegex' cs
+globToRegexEither' ('?':cs)       = Right $ '.' : globToRegex' cs
+globToRegexEither' ('[':'!':c:cs) = Right $ "[^" ++ c : charClass cs
+globToRegexEither' ('[':c:cs)     = Right $ '['  :  c : charClass cs
+globToRegexEither' ('[':_)        = Left "unterminated character class"
+globToRegexEither' (c:cs)         = Right $ escape c ++ globToRegex' cs
