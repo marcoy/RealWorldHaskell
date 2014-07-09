@@ -18,7 +18,10 @@ type Predicate =  FilePath      -- path to directory entry
                -> Bool
 
 getFileSize :: FilePath -> IO (Maybe Integer)
-getFileSize = undefined
+getFileSize path = handle (\_ -> return Nothing) $
+    bracket (openFile path ReadMode) hClose $ \h -> do
+        size <- hFileSize h
+        return (Just size)
 
 simpleFileSize :: FilePath -> IO Integer
 simpleFileSize path = do
