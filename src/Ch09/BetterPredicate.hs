@@ -17,8 +17,25 @@ type Predicate =  FilePath      -- path to directory entry
                -> UTCTime       -- last modified
                -> Bool
 
+type InfoP a =  FilePath        -- path to directory entry
+             -> Permissions     -- permissions
+             -> Maybe Integer   -- file size (Nothing if not file)
+             -> UTCTime         -- last modified
+             -> a
+
+pathP :: InfoP FilePath
+pathP path _ _ _ = path
+
+sizeP :: InfoP Integer
+sizeP _ _ (Just size) _ = size
+sizeP _ _ Nothing     _ = -1
+
+-- construct a predicate
+equalP :: (Eq a) => InfoP a -> a -> InfoP Bool
+equalP f k w x y z = f w x y z == k
+
 getFileSize :: FilePath -> IO (Maybe Integer)
-getFileSize path = handle (\_ -> return Nothing) $
+getFileSize path = handle ((\_ -> return Nothing) :: IOError -> IO (Maybe Integer)) $
     bracket (openFile path ReadMode) hClose $ \h -> do
         size <- hFileSize h
         return (Just size)
