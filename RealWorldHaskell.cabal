@@ -18,10 +18,12 @@ library
   ghc-options:         -threaded
   -- other-modules:       
   -- other-extensions:    
-  exposed-modules:     RWH,
-                       Ch03.Exercises,
-                       Ch04.Exercises,
-                       Ch18.Exercises
+  exposed-modules:     RWH
+                     , Ch03.Exercises
+                     , Ch04.Exercises
+                     , Ch18.Exercises
+                     , Ch10.PNM
+                     , Ch10.Parse
   build-depends:       base >=4.6 && <4.8,
                        mtl >=2.2.1 && <2.3,
                        containers >=0.5.5 && <0.6,
