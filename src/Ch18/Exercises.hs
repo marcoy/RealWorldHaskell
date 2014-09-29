@@ -5,6 +5,7 @@
 
 module Ch18.Exercises where
 
+import Control.Applicative
 import Control.Monad (liftM)
 import Control.Monad.State (State, MonadState, evalState, get , put)
 import Control.Monad.Trans (MonadTrans, lift)
@@ -13,6 +14,13 @@ import qualified Data.ByteString.Lazy as L
 import Data.Int (Int64)
 
 newtype EitherT a m b = EitherT { runEitherT :: m (Either a b) }
+
+instance (Functor m) => Functor (EitherT a m) where
+        fmap = undefined
+
+instance (Applicative m) => Applicative (EitherT a m) where
+        pure = undefined
+        (<*>) = undefined
 
 instance (Monad m) => Monad (EitherT a m) where
         return  = EitherT . return . Right
@@ -37,6 +45,13 @@ data ParseState = ParseState { string :: L.ByteString
 
 newtype Parse a = P { runP :: EitherT String (State ParseState) a }
                   deriving (Monad, MonadState ParseState)
+
+instance Functor Parse where
+        fmap = undefined
+
+instance Applicative Parse where
+        pure = undefined
+        (<*>) = undefined
 
 evalParse :: Parse a -> L.ByteString -> Either String a
 evalParse m s = evalState (runEitherT (runP m)) (ParseState s 0)
