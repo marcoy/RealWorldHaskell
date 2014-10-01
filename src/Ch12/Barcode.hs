@@ -101,3 +101,14 @@ parseRGB = parseByte ==> \r ->
 parseTimes :: Int -> Parse a -> Parse [a]
 parseTimes 0 _ = identity []
 parseTimes n p = p ==> \x -> (x:) <$> parseTimes (n-1) p
+
+luminance :: (Pixel, Pixel, Pixel) -> Pixel
+luminance (r,g,b) = round (r' * 0.30 + g' * 0.59 + b' * 0.11)
+    where r' = fromIntegral r
+          g' = fromIntegral g
+          b' = fromIntegral b
+
+type Greymap = Array (Int, Int) Pixel
+
+pixmapToGreymap :: Pixmap -> Greymap
+pixmapToGreymap = fmap luminance
