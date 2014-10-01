@@ -25,6 +25,7 @@ library
                      , Ch10.PNM
                      , Ch10.Parse
                      , Ch12.Barcode
+                     , Ch13.DList
   build-depends:       base >=4.6 && <4.8,
                        mtl >=2.2.1 && <2.3,
                        containers >=0.5.5 && <0.6,

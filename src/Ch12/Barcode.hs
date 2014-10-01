@@ -158,6 +158,8 @@ paritySRL = asSRL parityList
 distance :: [Score] -> [Score] -> Score
 distance a b = sum . map abs $ zipWith (-) a b
 
+type Digit = Int
+
 bestScores :: ScoreTable -> [Run] -> [(Score, Digit)]
 bestScores srl ps = take 3 . sort $ scores
     where scores = zip [distance d (scaleToOne ps) | d <- srl] digits
