@@ -5,8 +5,7 @@ module Ch14.Logger
         , runLogger
         ) where
 
-import Control.Monad( liftM
-                    , liftM2)
+import Control.Monad( liftM, liftM2 )
 
 
 newtype Logger a = Logger { execLogger :: (a, Log) }
@@ -19,6 +18,9 @@ instance Monad Logger where
                    n      = k a
                    (b, x) = execLogger n
                in Logger (b, w ++ x)
+
+record :: String -> Logger ()
+record s = Logger ((), [s])
 
 runLogger :: Logger a -> (a, Log)
 runLogger = execLogger
@@ -50,7 +52,6 @@ globToRegex' ('[':_) =
     fail "unterminated character class"
 globToRegex' (c:cs) = liftM2 (++) (escape c) (globToRegex' cs)
 
--- charClass :: [String] -> 
 charClass (']':cs) = (']':) `liftM` globToRegex' cs
 charClass (c:cs)   = (c:) `liftM` charClass cs
 
@@ -59,6 +60,3 @@ escape c
     | c `elem` regexChars = record "escape" >> return ['\\',c]
     | otherwise           = return [c]
   where regexChars = "\\+()^$.{}]|"
-
-record :: String -> Logger ()
-record s = Logger ((), [s])
