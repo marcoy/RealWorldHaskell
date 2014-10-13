@@ -10,3 +10,9 @@ class (Monad m) => MonadSupply s m | m -> s where
 
 instance MonadSupply s (S.Supply s) where
     next = S.next
+
+showTwoClass :: (Show s, Monad m, MonadSupply s m) => m String
+showTwoClass = do
+        a <- next
+        b <- next
+        return (show "a: " ++ show a ++ ", b: " ++ show b)
