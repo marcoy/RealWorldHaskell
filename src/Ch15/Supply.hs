@@ -9,6 +9,7 @@ module Ch15.Supply
     where
 
 
+import Control.Applicative ( Applicative )
 import Control.Monad.State( State
                           , get
                           , put
@@ -16,7 +17,7 @@ import Control.Monad.State( State
 
 
 newtype Supply s a = S (State [s] a)
-                   deriving (Monad)
+                     deriving (Applicative, Functor, Monad)
 
 -- instance Monad (Supply s) where
 --     return  = S . return
